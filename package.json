@@ -1,0 +1,18 @@
+{
+  "name": "passwall-nuxt",
+  "version": "1.0.0",
+  "description": "passwall-nuxt",
+  "author": "hakanpeksen",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "nuxt": "^2.0.0",
+    "@nuxtjs/bulma": "^1.2.1"
+  },
+  "devDependencies": {}
+}
