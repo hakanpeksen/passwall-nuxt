@@ -17,8 +17,6 @@
     </section>
     <b-field label="Password">
       <b-input
-
-      
         type="password"
         value="iwantmytreasure"
         password-reveal
