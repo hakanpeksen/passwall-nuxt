@@ -16,45 +16,39 @@
           {{ errorMessage }}
         </b-message>
         <form @submit.prevent="signinUser" method="post">
-          <div class="field">
-            <label for="" class="label">Base URL</label>
-            <div class="control has-icons-left">
-              <b-icon
-                pack="fas"
-                icon="globe"
-                size="is-small"
-              />
-              <input
-                v-model="userForm.baseurl"
-                type="text"
-                placeholder="https://passwall-server.hakanpeksen.com"
-                class="input"
-                required
-              >
-            </div>
-          </div>
-          <div class="field">
-            <label for="" class="label">Username</label>
-            <div class="control has-icons-left">
-              <b-icon
-                pack="fas"
-                icon="user"
-                size="is-small"
-              />
-              <input v-model="userForm.username" type="text" placeholder="Username" class="input" required>
-            </div>
-          </div>
-          <div class="field">
-            <label for="" class="label">Password</label>
-            <div class="control has-icons-left">
-              <b-icon
-                pack="fas"
-                icon="lock"
-                size="is-small"
-              />
-              <input v-model="userForm.password" type="text" placeholder="Password" class="input" required>
-            </div>
-          </div>
+          <b-field label="Base URL" label-for="uf_baseurl">
+            <b-input
+              id="uf_baseurl"
+              v-model="userForm.baseurl"
+              type="text"
+              size="is-medium"
+              placeholder="https://passwall-server.hakanpeksen.com"
+              required
+              autofocus
+            />
+          </b-field>
+          <b-field label="Username" label-for="uf_username">
+            <b-input
+              id="uf_username"
+              v-model="userForm.username"
+              type="text"
+              size="is-medium"
+              placeholder="Username"
+              required
+              autofocus
+            />
+          </b-field>
+          <b-field label="Password" label-for="uf_password">
+            <b-input
+              id="uf_password"
+              v-model="userForm.password"
+              type="password"
+              size="is-medium"
+              placeholder="Password"
+              required
+              password-reveal
+            />
+          </b-field>
           <div class="field">
             <button class="button is-info">
               Login
@@ -106,5 +100,26 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.is-medium.input, .is-medium.textarea {
+    font-size: 1.10rem !important;
+}
+.ant-input-affix-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    min-width: 0;
+    padding: 4px 11px;
+    color: rgba(0,0,0,.65);
+    font-size: 14px;
+    line-height: 1.5715;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    transition: all .3s;
+    display: inline-flex;
+    max-height: 32px;
+}
+
 </style>
