@@ -12,6 +12,9 @@
         <div class="ant-typography">
           Login to the Dashboard
         </div>
+        <b-message :active.sync="isError" type="is-danger">
+          {{ errorMessage }}
+        </b-message>
         <form @submit.prevent="signinUser" method="post">
           <div class="field">
             <label for="" class="label">Base URL</label>
@@ -21,7 +24,13 @@
                 icon="globe"
                 size="is-small"
               />
-              <input type="text" placeholder="https://passwall-server.hakanpeksen.com" class="input" required>
+              <input
+                v-model="userForm.baseurl"
+                type="text"
+                placeholder="https://passwall-server.hakanpeksen.com"
+                class="input"
+                required
+              >
             </div>
           </div>
           <div class="field">
@@ -32,7 +41,7 @@
                 icon="user"
                 size="is-small"
               />
-              <input type="text" placeholder="Username" class="input" required>
+              <input v-model="userForm.username" type="text" placeholder="Username" class="input" required>
             </div>
           </div>
           <div class="field">
@@ -43,7 +52,7 @@
                 icon="lock"
                 size="is-small"
               />
-              <input type="text" placeholder="Password" class="input" required>
+              <input v-model="userForm.password" type="text" placeholder="Password" class="input" required>
             </div>
           </div>
           <div class="field">
@@ -56,19 +65,21 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {
     return {
       userForm: {
-        baseurl: '',
+        baseurl: process.env.baseURL || '',
         username: '',
         password: ''
-      }
-    //   isError: false,
-    //   errorMessage: null
+      },
+      isError: false,
+      errorMessage: null
     }
+  },
+
+  created() {
   },
   //   asyncData({ store, redirect }) {
   //     if (store.state.auth.loggedIn === true) {
@@ -78,13 +89,12 @@ export default {
   methods: {
     async signinUser() {
       try {
-        await this.$axios.post({ data: this.userForm })
-
-        this.$toast.open({
+        await this.$axios.post('https://passwall-server.hakanpeksen.com/auth/signin', this.userForm)
+        this.$buefy.toast.open({
           message: 'You have successfully logged in!',
           type: 'is-success',
-          position: 'is-bottom',
-          duration: 7000
+          position: 'is-top',
+          duration: 3000
         })
       } catch (e) {
         this.errorMessage = 'Your email address or password don\'t match!'
@@ -92,6 +102,7 @@ export default {
       }
     }
   }
+
 }
 </script>
 

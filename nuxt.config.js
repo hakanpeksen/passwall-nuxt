@@ -1,8 +1,8 @@
 export default {
   mode: 'universal',
   /*
-   ** Headers of the page
-   */
+     ** Headers of the page
+     */
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -17,46 +17,49 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   /*
-   ** Customize the progress-bar color
-   */
+     ** Customize the progress-bar color
+     */
   loading: { color: '#fff' },
   /*
-   ** Global CSS
-   */
+     ** Global CSS
+     */
   css: [{ src: '~/assets/css/main.scss', lang: 'scss' }],
   /*
-   ** Plugins to load before mounting the App
-   */
+     ** Plugins to load before mounting the App
+     */
   plugins: [],
   /*
-   ** Nuxt.js dev-modules
-   */
+     ** Nuxt.js dev-modules
+     */
   buildModules: [],
   /*
-   ** Nuxt.js modules
-   */
+     ** Nuxt.js modules
+     */
   modules: [
     '@nuxtjs/axios',
     'nuxt-buefy',
     'nuxt-fontawesome'
     // Doc: https://github.com/nuxt-community/modules/tree/master/packages/bulma
   ],
+  axios: {
+    // baseURL: 'https://monitera-trends.appspot.com'
+    baseURL: 'https://passwall-server.hakanpeksen.com'
+  },
+
   buefy: {
     materialDesignIcons: false,
     defaultIconPack: 'fas',
     defaultIconComponent: 'font-awesome-icon'
   },
   fontawesome: {
-    imports: [
-      {
-        set: '@fortawesome/free-solid-svg-icons',
-        icons: ['fas']
-      }
-    ]
+    imports: [{
+      set: '@fortawesome/free-solid-svg-icons',
+      icons: ['fas']
+    }]
   },
   /*
-   ** Build configuration
-   */
+     ** Build configuration
+     */
   build: {
     // postcss: {
     //     preset: {
@@ -66,8 +69,8 @@ export default {
     //     }
     // },
     /*
-     ** You can extend webpack config here
-     */
+         ** You can extend webpack config here
+         */
     extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
