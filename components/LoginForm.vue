@@ -27,6 +27,7 @@
               autofocus
             />
           </b-field>
+          <span v-if="errorValidUrl">{{ errorValidMessage }}</span>
           <b-field label="Username" label-for="uf_username">
             <b-input
               id="uf_username"
@@ -69,7 +70,9 @@ export default {
         password: ''
       },
       isError: false,
-      errorMessage: null
+      errorMessage: null,
+      errorValidMessage: null,
+      errorValidUrl: false
     }
   },
 
@@ -85,7 +88,11 @@ export default {
       const url = this.userForm.baseurl
       const urlRegExp = /^(?:([a-z0-9+.-]+):\/\/)(?:\S+(?::\S*)?@)?(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/ // eslint-disable-line max-len
       if (!urlRegExp.test(url)) {
-        alert('BaseURL must be a valid URL')
+        this.errorValidUrl = true
+        this.errorValidMessage = 'BaseURL must be a valid URL'
+      } else {
+        this.errorValidUrl = false
+        this.errorValidMessage = ''
       }
       try {
         await this.$axios.post('https://passwall-server.hakanpeksen.com/auth/signin', this.userForm)
