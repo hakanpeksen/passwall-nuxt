@@ -4,6 +4,23 @@
       <div class="columns">
         <div class="column is-3" />
         <div class="column is-6">
+          <h2 class="ant-typography">
+            <span style="font-weight: bold;">Pass</span>Wall
+          </h2>
+        </div>
+        <div class="column is-3">
+          <button class="button is-info">
+            <b-icon
+              icon="plus"
+              size="is-small"
+            />
+            <span> New Pass</span>
+          </button>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column is-3" />
+        <div class="column is-6">
           <b-table
             v-if="dataList && dataList.length > 0"
             :data="dataList"
@@ -28,6 +45,7 @@
           </b-table>
         </div>
       </div>
+    </div>
     </div>
   </section>
 </template>
@@ -94,4 +112,7 @@ export default {
 </script>
 
 <style>
+.ant-typography{
+  font-size:30px;
+}
 </style>
