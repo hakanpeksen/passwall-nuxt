@@ -101,6 +101,7 @@ export default {
             localStorage.setItem('TOKEN', res.data.access_token)
             localStorage.setItem('REFRESH_TOKEN', res.data.refresh_token)
           })
+        this.$router.push({ path: '/password' })
         this.isError = false
         this.$buefy.toast.open({
           message: 'You have successfully logged in!',

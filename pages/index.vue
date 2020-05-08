@@ -53,7 +53,7 @@ export default {
 body {
   padding: 30px;
 }
-  .login-wrapper {
+   .login-wrapper {
           display: flex;
           justify-content: center;
           align-items: center;
