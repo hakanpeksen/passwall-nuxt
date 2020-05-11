@@ -11,7 +11,8 @@
         "generate": "nuxt generate",
         "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
         "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
-        "precommit": "npm run lint"
+        "precommit": "npm run lint",
+        "css-build": "node-sass --omit-source-map-url assets/scss/main.scss node_modules/buefy/dist/buefy.css"
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.28",

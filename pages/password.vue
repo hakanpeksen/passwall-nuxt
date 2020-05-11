@@ -9,7 +9,7 @@
           </h2>
         </div>
         <div class="column is-3">
-          <button class="button is-info">
+          <button @click="ismodalAlertCreate = true" class="button is-info">
             <b-icon
               icon="plus"
               size="is-small"
@@ -17,6 +17,61 @@
             <span> New Pass</span>
           </button>
         </div>
+        <!-- Create Alert Modal Form  -->
+        <b-modal :active.sync="ismodalAlertCreate" :width="640">
+          <form @submit.prevent="alertCreate" method="post">
+            <div class="box has-background-lighter">
+              <div class="p-md">
+                <div class="ant-modal-header">
+                  <div class="ant-modal-title">
+                    New Pass
+                  </div>
+                </div>
+                <div class="field">
+                  <b-field label="URL" label-for="uf_baseurl">
+                    <b-input
+                      id="uf_baseurl"
+                      v-model="userForm.baseurl"
+                      type="text"
+                      size="is-medium"
+                      placeholder="https://example.com"
+                      required
+                      autofocus
+                    />
+                  </b-field>
+                  <span v-if="errorValidUrl">{{ errorValidMessage }}</span>
+                  <b-field label="Username" label-for="uf_username">
+                    <b-input
+                      id="uf_username"
+                      v-model="userForm.username"
+                      type="text"
+                      size="is-medium"
+                      placeholder="Username or Email"
+                      required
+                      autofocus
+                    />
+                  </b-field>
+                  <b-field label="Password" label-for="uf_password">
+                    <b-input
+                      id="uf_password"
+                      v-model="userForm.password"
+                      type="password"
+                      size="is-medium"
+                      placeholder="Password"
+                      required
+                      password-reveal
+                    />
+                  </b-field>
+                  <div class="control">
+                    <button type="submit" name="button" class="button is-medium is-info">
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </b-modal>
       </div>
       <div class="columns">
         <div class="column is-3" />
@@ -46,7 +101,6 @@
         </div>
       </div>
     </div>
-    </div>
   </section>
 </template>
 
@@ -54,10 +108,15 @@
 export default {
   data() {
     return {
+      userForm: {
+        baseurl: process.env.baseURL || '',
+        username: '',
+        password: ''
+      },
       defaultSortDirection: 'asc',
       sortIcon: 'arrow-up',
       sortIconSize: 'is-small',
-
+      ismodalAlertCreate: false,
       dataList: [
         {
           id: 14,
@@ -110,9 +169,3 @@ export default {
 
 }
 </script>
-
-<style>
-.ant-typography{
-  font-size:30px;
-}
-</style>

@@ -118,27 +118,3 @@ export default {
 
 }
 </script>
-
-<style>
-.is-medium.input, .is-medium.textarea {
-    font-size: 1.10rem !important;
-}
-.ant-input-affix-wrapper {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    min-width: 0;
-    padding: 4px 11px;
-    color: rgba(0,0,0,.65);
-    font-size: 14px;
-    line-height: 1.5715;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #d9d9d9;
-    border-radius: 2px;
-    transition: all .3s;
-    display: inline-flex;
-    max-height: 32px;
-}
-
-</style>
