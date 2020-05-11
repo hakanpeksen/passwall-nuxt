@@ -148,3 +148,12 @@ div.control input::placeholder {
     line-height: 22px;
     word-wrap: break-word;
 }
+
+.dropdown {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    position: relative;
+    vertical-align: middle;
+    margin-top: 13px;
+}
