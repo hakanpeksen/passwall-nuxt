@@ -1,15 +1,14 @@
 <template>
-  <section class="section">
     <div class="container">
       <div class="columns">
-        <div class="column is-3" />
-        <div class="column is-6">
+        <div class="column"></div>
+        <div class="column">
           <h2 class="ant-typography">
             <span style="font-weight: bold;">Pass</span>Wall
           </h2>
         </div>
-        <div class="column is-3">
-          <button @click="ismodalAlertCreate = true" class="button is-info">
+        <div class="column">
+          <button @click="ismodalAlertCreate = true" class="button is-info is-pulled-right">
             <b-icon
               icon="plus"
               size="is-small"
@@ -17,6 +16,7 @@
             <span> New Pass</span>
           </button>
         </div>
+        <div class="column"></div>
         <!-- Create Alert Modal Form  -->
         <b-modal :active.sync="ismodalAlertCreate" :width="640">
           <form @submit.prevent="alertCreate" method="post">
@@ -110,7 +110,6 @@
         </div>
       </div>
     </div>
-  </section>
 </template>
 
 <script>
