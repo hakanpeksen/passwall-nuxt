@@ -20,58 +20,67 @@
         <!-- Create Alert Modal Form  -->
         <b-modal :active.sync="ismodalAlertCreate" :width="640">
           <form @submit.prevent="alertCreate" method="post">
-            <div class="box has-background-lighter">
-              <div class="p-md">
-                <div class="ant-modal-header">
-                  <div class="ant-modal-title">
-                    New Pass
-                  </div>
+            <div class="box">
+              <div class="ant-modal-header">
+                <div class="ant-modal-title">
+                  New Pass
                 </div>
-                <div class="field">
-                  <b-field label="URL" label-for="uf_baseurl">
-                    <b-input
-                      id="uf_baseurl"
-                      v-model="userForm.baseurl"
-                      type="text"
-                      size="is-medium"
-                      placeholder="https://example.com"
-                      required
-                      autofocus
-                    />
-                  </b-field>
-                  <span v-if="errorValidUrl">{{ errorValidMessage }}</span>
-                  <b-field label="Username" label-for="uf_username">
-                    <b-input
-                      id="uf_username"
-                      v-model="userForm.username"
-                      type="text"
-                      size="is-medium"
-                      placeholder="Username or Email"
-                      required
-                      autofocus
-                    />
-                  </b-field>
-                  <b-field label="Password" label-for="uf_password">
-                    <b-input
-                      id="uf_password"
-                      v-model="userForm.password"
-                      type="password"
-                      size="is-medium"
-                      placeholder="Password"
-                      required
-                      password-reveal
-                    />
-                  </b-field>
-                  <div class="control">
-                    <button type="submit" name="button" class="button is-medium is-info">
-                      Save
-                    </button>
-                  </div>
+              </div>
+              <div class="field">
+                <b-field label="URL" label-for="uf_baseurl">
+                  <b-input
+                    id="uf_baseurl"
+                    v-model="userForm.baseurl"
+                    type="text"
+                    size="is-medium"
+                    placeholder="https://example.com"
+                    required
+                    autofocus
+                  />
+                </b-field>
+                <span v-if="errorValidUrl">{{ errorValidMessage }}</span>
+                <b-field label="Username" label-for="uf_username">
+                  <b-input
+                    id="uf_username"
+                    v-model="userForm.username"
+                    type="text"
+                    size="is-medium"
+                    placeholder="Username or Email"
+                    required
+                    autofocus
+                  />
+                </b-field>
+                <b-field label="Password" label-for="uf_password">
+                  <b-input
+                    id="uf_password"
+                    v-model="userForm.password"
+                    type="password"
+                    size="is-medium"
+                    placeholder="Password"
+                    required
+                    password-reveal
+                  />
+                </b-field>
+                <div class="control">
+                  <button @click="ismodalAlertCreate = false" class="button is-rounded" type="button">
+                    Cancel
+                  </button>
+                  <button type="submit" name="button" class="button is-info is-rounded">
+                    Save
+                  </button>
                 </div>
               </div>
             </div>
           </form>
         </b-modal>
+      </div>
+      <div class="columns">
+        <div class="column is-3" />
+        <div class="column is-6">
+          <div class="control">
+            <input class="input" type="text" placeholder="Search">
+          </div>
+        </div>
       </div>
       <div class="columns">
         <div class="column is-3" />
