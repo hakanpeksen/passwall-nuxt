@@ -78,7 +78,12 @@
       <div class="column is-3" />
       <div class="column is-6">
         <div class="control">
-          <input class="input" type="text" placeholder="Search">
+          <input
+            v-model="findUsername"
+            class="input"
+            placeholder="Search"
+            type="text"
+          >
         </div>
       </div>
     </div>
@@ -87,7 +92,7 @@
       <div class="column is-6">
         <b-table
           v-if="dataList && dataList.length > 0"
-          :data="dataList"
+          :data="filteredUsername"
           :columns="columns"
           :default-sort-direction="defaultSortDirection"
           :sort-icon="sortIcon"
@@ -116,11 +121,16 @@
 export default {
   data() {
     return {
+      findUsername: '',
       userForm: {
         baseurl: process.env.baseURL || '',
         username: '',
         password: ''
       },
+      keepFirst: false,
+      openOnFocus: false,
+      name: '',
+      selected: null,
       defaultSortDirection: 'asc',
       sortIcon: 'arrow-up',
       sortIconSize: 'is-small',
@@ -146,6 +156,12 @@ export default {
         }
       ]
 
+    }
+  },
+  computed: {
+    filteredUsername() {
+      const filter = new RegExp(this.findUsername, 'i')
+      return this.dataList.filter(el => el.username.toString().match(filter))
     }
   },
   mounted() {
