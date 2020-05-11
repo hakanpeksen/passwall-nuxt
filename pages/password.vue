@@ -15,27 +15,27 @@
           />
           <span> New Pass</span>
         </button>
-        </div>
-        <div class="">
-          <b-dropdown aria-role="list">
-            <button slot="trigger" class="button">
-              <b-icon
-                icon="ellipsis-h"
-                size="is-small"
-              />
-            </button>
-            <b-dropdown-item aria-role="listitem">
-              Action
-            </b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">
-              Another action
-            </b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">
-              Something else
-            </b-dropdown-item>
-          </b-dropdown>
-        </div>
-       <div class="column" />
+      </div>
+      <div>
+        <b-dropdown class="is-bottom-left" aria-role="list">
+          <button slot="trigger" class="button">
+            <b-icon
+              icon="ellipsis-h"
+              size="is-small"
+            />
+          </button>
+          <b-dropdown-item aria-role="listitem">
+            Action
+          </b-dropdown-item>
+          <b-dropdown-item aria-role="listitem">
+            Another action
+          </b-dropdown-item>
+          <b-dropdown-item aria-role="listitem">
+            Something else
+          </b-dropdown-item>
+        </b-dropdown>
+      </div>
+      <div class="column" />
       <!-- Create Alert Modal Form  -->
       <b-modal :active.sync="ismodalAlertCreate" :width="640">
         <form @submit.prevent="alertCreate" method="post">
@@ -95,17 +95,16 @@
     </div>
     <div class="columns">
       <div class="column is-3" />
-      <div class="column is-6">
-        <div class="control">
-          <input
-            v-model="findUsername"
-            class="input"
-            placeholder="Search"
-            type="text"
-          >
-        </div>
+      <div class="column is-7">
+        <input
+          v-model="findUsername"
+          class="input"
+          placeholder="Search"
+          type="text"
+          />
       </div>
-    </div>
+      <div class="column" />
+       </div>
     <div class="columns">
       <div class="column is-3" />
       <div class="column is-6">
