@@ -92,6 +92,59 @@
           </div>
         </form>
       </b-modal>
+      <!-- Edit Alert Modal Form  -->
+      <b-modal :active.sync="ismodalAlertEdit" :width="640">
+        <form @submit.prevent="alertEdit" method="post">
+          <div class="box">
+            <div class="ant-modal-header">
+              <div class="ant-modal-title">
+                Edit
+              </div>
+            </div>
+            <input v-model="alertEditForm.id" type="hidden">
+            <div class="field">
+              <b-field label="URL" label-for="uf_baseurl">
+                <b-input
+                  id="uf_baseurl"
+                  v-model="alertEditForm.url"
+                  type="text"
+                  size="is-medium"
+                  placeholder="https://example.com"
+                  required
+                  autofocus
+                />
+              </b-field>
+              <b-field label="Username" label-for="uf_username">
+                <b-input
+                  id="uf_username"
+                  v-model="alertEditForm.username"
+                  type="text"
+                  size="is-medium"
+                  placeholder="Username or Email"
+                  required
+                  autofocus
+                />
+              </b-field>
+              <b-field label="Password" label-for="uf_password">
+                <b-input
+                  id="uf_password"
+                  v-model="alertEditForm.password"
+                  type="password"
+                  size="is-medium"
+                  placeholder="Password"
+                  required
+                  password-reveal
+                />
+              </b-field>
+              <div class="control">
+                <button type="submit" name="button" class="button is-info is-rounded">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </b-modal>
     </div>
     <div class="columns">
       <div class="column is-3" />
@@ -101,35 +154,24 @@
           class="input"
           placeholder="Search"
           type="text"
-          />
+        >
       </div>
       <div class="column" />
-       </div>
+    </div>
     <div class="columns">
       <div class="column is-3" />
       <div class="column is-6">
         <b-table
           v-if="dataList && dataList.length > 0"
-          :data="filteredUsername"
+          :data="dataList"
           :columns="columns"
-          :default-sort-direction="defaultSortDirection"
-          :sort-icon="sortIcon"
-          :sort-icon-size="sortIconSize"
-          default-sort="url"
-        >
-          <template slot-scope="props">
-            <b-table-column field="url" label="Url" sortable>
-              {{ props.row.url }}
-            </b-table-column>
-            <b-table-column field="username" label="Username" sortable>
-              {{ props.row.username }}
-            </b-table-column>
-            <b-table-column field="password" label="Password" sortable>
-              {{ props.row.password }}
-            </b-table-column>
-            <b-table-column field="" label="" sortable />
-          </template>
-        </b-table>
+          :checked-rows.sync="checkedRows"
+          checkable
+        />
+        <button :disabled="!checkedRows || checkedRows.length !== 1" @click="valuesAlertEdit()" class="button field is-dark is-outlined">
+          <span class="lt-icon icon-down p-r-sm" />
+          <span>Edit</span>
+        </button>
       </div>
     </div>
   </div>
@@ -139,16 +181,6 @@
 export default {
   data() {
     return {
-      findUsername: '',
-      userForm: {
-        baseurl: process.env.baseURL || '',
-        username: '',
-        password: ''
-      },
-      defaultSortDirection: 'asc',
-      sortIcon: 'arrow-up',
-      sortIconSize: 'is-small',
-      ismodalAlertCreate: false,
       dataList: [
         {
           id: 14,
@@ -168,7 +200,35 @@ export default {
           username: 'Ahmet',
           password: 'YEF7eNCmdXu'
         }
-      ]
+      ],
+      columns: [{
+        field: 'url',
+        label: 'Url'
+      },
+      {
+        field: 'username',
+        label: 'Username'
+      },
+      {
+        field: 'password',
+        label: 'Password'
+      }],
+      userForm: {
+        baseurl: process.env.baseURL || '',
+        username: '',
+        password: ''
+      },
+      alertEditForm: {
+        id: null,
+        url: null,
+        username: null,
+        password: null
+
+      },
+      checkedRows: [],
+      findUsername: '',
+      ismodalAlertEdit: false,
+      ismodalAlertCreate: false
 
     }
   },
@@ -183,6 +243,13 @@ export default {
   },
 
   methods: {
+    valuesAlertEdit() {
+      this.alertEditForm.id = this.checkedRows[0].id
+      this.alertEditForm.url = this.checkedRows[0].url
+      this.alertEditForm.username = this.checkedRows[0].username
+      this.alertEditForm.password = this.checkedRows[0].password
+      this.ismodalAlertEdit = true
+    }
     // async passwordGet() {
     //   try {
     //   //  await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'))
