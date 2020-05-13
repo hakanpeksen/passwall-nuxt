@@ -311,7 +311,11 @@ export default {
       })
     },
     alertDelete(event) {
-      console.log('deleted', event.id)
+      // console.log('deleted', event.id)
+      const index = event.id
+      console.log(this.dataList.splice(index, 1))
+      // console.log('deleted', event.id)
+
       // for (let i = 0; i < this.checkedRows.length; i++) {
       //   console.log(this.checkedRows[i].id)
       // }
