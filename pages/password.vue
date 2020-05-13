@@ -161,6 +161,14 @@
     <div class="columns">
       <div class="column is-3" />
       <div class="column is-6">
+        <button :disabled="!checkedRows || checkedRows.length !== 1" @click="valuesAlertEdit()" class="button field is-dark is-outlined">
+          <b-icon icon="edit" size="is-small" />
+          <span>Edit</span>
+        </button>
+        <button :disabled="!checkedRows || !checkedRows.length" @click="confirmAlertDelete()" class="button field is-danger is-outlined">
+          <b-icon icon="trash" size="is-small" />
+          <span>Delete</span>
+        </button>
         <b-table
           v-if="dataList && dataList.length > 0"
           :data="dataList"
@@ -168,10 +176,6 @@
           :checked-rows.sync="checkedRows"
           checkable
         />
-        <button :disabled="!checkedRows || checkedRows.length !== 1" @click="valuesAlertEdit()" class="button field is-dark is-outlined">
-          <span class="lt-icon icon-down p-r-sm" />
-          <span>Edit</span>
-        </button>
       </div>
     </div>
   </div>
@@ -184,21 +188,33 @@ export default {
       dataList: [
         {
           id: 14,
-          created_at: '2020-04-30T10:29:04.010137+03:00',
-          updated_at: '2020-04-30T10:29:04.010137+03:00',
-          deleted_at: null,
-          url: 'https://paypal.com/tr/ame',
+          url: 'paypal.com/tr/home',
           username: 'Jammie',
           password: 'YEF7eNCmdXu'
         },
         {
           id: 13,
-          created_at: '2020-04-30T10:29:04.010137+03:00',
-          updated_at: '2020-04-30T10:29:04.010137+03:00',
-          deleted_at: null,
-          url: 'https://paypal.com/tr/home',
-          username: 'Ahmet',
-          password: 'YEF7eNCmdXu'
+          url: 'cloudflare.com',
+          username: 'Patsy',
+          password: 'LWPJv0KizB2th'
+        },
+        {
+          id: 12,
+          url: 'twitch.tv',
+          username: 'Cade',
+          password: 'JkC_!c5Mgk=b'
+        },
+        {
+          id: 11,
+          url: 'facebook.com',
+          username: 'Dickinson',
+          password: 'tytAioiLtfNN2'
+        },
+        {
+          id: 10,
+          url: 'mail.google.com',
+          username: 'Adella',
+          password: 'O]LTPvTq'
         }
       ],
       columns: [{
@@ -228,7 +244,8 @@ export default {
       checkedRows: [],
       findUsername: '',
       ismodalAlertEdit: false,
-      ismodalAlertCreate: false
+      ismodalAlertCreate: false,
+      isPlural: ''
 
     }
   },
@@ -249,7 +266,40 @@ export default {
       this.alertEditForm.username = this.checkedRows[0].username
       this.alertEditForm.password = this.checkedRows[0].password
       this.ismodalAlertEdit = true
+    },
+    alertEdit() {
+      console.log(this.alertEditForm.id, this.alertEditForm.url, this.alertEditForm.username)
+
+      this.ismodalAlertEdit = false
+    },
+    confirmAlertDelete() {
+      if (this.checkedRows.length > 1) {
+        this.isPlural = 's'
+      } else {
+        this.isPlural = ''
+      }
+      this.$buefy.dialog.confirm({
+        title: `Deleting alert${this.isPlural}`,
+        message: `Are you sure you want to <b>delete</b> your alert${this.isPlural}? This action cannot be undone.`,
+        confirmText: `Delete Alert${this.isPlural}`,
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => this.alertDelete()
+      })
+    },
+    alertDelete() {
+      for (let i = 0; i < this.checkedRows.length; i++) {
+        console.log(this.checkedRows[i].id)
+      }
+      this.$buefy.toast.open({
+        message: 'You have successfully deleted!',
+        type: 'is-success',
+        position: 'is-bottom-right',
+        duration: 4000
+      })
+      this.checkedRows = []
     }
+
     // async passwordGet() {
     //   try {
     //   //  await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'))
