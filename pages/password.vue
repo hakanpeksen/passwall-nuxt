@@ -161,26 +161,37 @@
     <div class="columns">
       <div class="column is-3" />
       <div class="column is-6">
-        <button :disabled="!checkedRows || checkedRows.length !== 1" @click="valuesAlertEdit()" class="button field is-dark is-outlined">
-          <b-icon icon="edit" size="is-small" />
-          <span>Edit</span>
-        </button>
-        <button :disabled="!checkedRows || !checkedRows.length" @click="confirmAlertDelete()" class="button field is-danger is-outlined">
-          <b-icon icon="trash" size="is-small" />
-          <span>Delete</span>
-        </button>
         <b-table
           v-if="dataList && dataList.length > 0"
-          :data="dataList"
+          :data="filteredUsername"
           :columns="columns"
-          :checked-rows.sync="checkedRows"
-           :checkbox-position="checkboxPosition"
-          :paginated="isPaginated"
-          :per-page="perPage"
-          :current-page.sync="currentPage"
-          :pagination-size="paginationSize"
-          checkable
-        />
+          :default-sort-direction="defaultSortDirection"
+          :sort-icon="sortIcon"
+          :sort-icon-size="sortIconSize"
+          default-sort="url"
+        >
+          <template slot-scope="props">
+            <b-table-column field="url" label="Url" sortable>
+              {{ props.row.url }}
+            </b-table-column>
+            <b-table-column field="username" label="Username" sortable>
+              {{ props.row.username }}
+            </b-table-column>
+            <b-table-column field="password" label="Password" sortable>
+              {{ props.row.password }}
+            </b-table-column>
+            <b-table-column field="" label="" sortable />
+
+            <b-table-column>
+              <button @click="valuesAlertEdit(props.row,$event)" class="button is-small is-light">
+                <b-icon icon="edit" size="is-small" />
+              </button>
+              <button @click="confirmAlertDelete(props.row,$event)" class="button is-small is-light">
+                <b-icon icon="trash" size="is-small" />
+              </button>
+            </b-table-column>
+          </template>
+        </b-table>
       </div>
     </div>
   </div>
@@ -228,18 +239,18 @@ export default {
           password: 'O]LTPvTq'
         }
       ],
-      columns: [{
-        field: 'url',
-        label: 'Url'
-      },
-      {
-        field: 'username',
-        label: 'Username'
-      },
-      {
-        field: 'password',
-        label: 'Password'
-      }],
+      // columns: [{
+      //   field: 'url',
+      //   label: 'Url'
+      // },
+      // {
+      //   field: 'username',
+      //   label: 'Username'
+      // },
+      // {
+      //   field: 'password',
+      //   label: 'Password'
+      // }],
       userForm: {
         baseurl: process.env.baseURL || '',
         username: '',
@@ -271,11 +282,12 @@ export default {
   },
 
   methods: {
-    valuesAlertEdit() {
-      this.alertEditForm.id = this.checkedRows[0].id
-      this.alertEditForm.url = this.checkedRows[0].url
-      this.alertEditForm.username = this.checkedRows[0].username
-      this.alertEditForm.password = this.checkedRows[0].password
+    valuesAlertEdit(event) {
+      // console.log(event.id)
+      this.alertEditForm.id = event.id
+      this.alertEditForm.url = event.url
+      this.alertEditForm.username = event.username
+      this.alertEditForm.password = event.password
       this.ismodalAlertEdit = true
     },
     alertEdit() {
@@ -283,25 +295,26 @@ export default {
 
       this.ismodalAlertEdit = false
     },
-    confirmAlertDelete() {
-      if (this.checkedRows.length > 1) {
-        this.isPlural = 's'
-      } else {
-        this.isPlural = ''
-      }
+    confirmAlertDelete(event) {
+      // if (this.checkedRows.length > 1) {
+      //   this.isPlural = 's'
+      // } else {
+      //   this.isPlural = ''
+      // }
       this.$buefy.dialog.confirm({
         title: `Deleting alert${this.isPlural}`,
         message: `Are you sure you want to <b>delete</b> your alert${this.isPlural}? This action cannot be undone.`,
         confirmText: `Delete Alert${this.isPlural}`,
         type: 'is-danger',
         hasIcon: true,
-        onConfirm: () => this.alertDelete()
+        onConfirm: () => this.alertDelete(event)
       })
     },
-    alertDelete() {
-      for (let i = 0; i < this.checkedRows.length; i++) {
-        console.log(this.checkedRows[i].id)
-      }
+    alertDelete(event) {
+      console.log('deleted', event.id)
+      // for (let i = 0; i < this.checkedRows.length; i++) {
+      //   console.log(this.checkedRows[i].id)
+      // }
       this.$buefy.toast.open({
         message: 'You have successfully deleted!',
         type: 'is-success',
