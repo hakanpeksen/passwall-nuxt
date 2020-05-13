@@ -174,6 +174,7 @@
           :data="dataList"
           :columns="columns"
           :checked-rows.sync="checkedRows"
+           :checkbox-position="checkboxPosition"
           :paginated="isPaginated"
           :per-page="perPage"
           :current-page.sync="currentPage"
@@ -194,6 +195,7 @@ export default {
       currentPage: 1,
       perPage: 2,
       paginationSize: 'is-small',
+      checkboxPosition: 'right',
       dataList: [
         {
           id: 14,
