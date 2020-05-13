@@ -174,6 +174,10 @@
           :data="dataList"
           :columns="columns"
           :checked-rows.sync="checkedRows"
+          :paginated="isPaginated"
+          :per-page="perPage"
+          :current-page.sync="currentPage"
+          :pagination-size="paginationSize"
           checkable
         />
       </div>
@@ -185,6 +189,11 @@
 export default {
   data() {
     return {
+      isPaginated: true,
+      isPaginationSimple: false,
+      currentPage: 1,
+      perPage: 2,
+      paginationSize: 'is-small',
       dataList: [
         {
           id: 14,
