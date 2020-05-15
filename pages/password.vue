@@ -296,11 +296,7 @@ export default {
       this.ismodalAlertEdit = false
     },
     confirmAlertDelete(event) {
-      // if (this.checkedRows.length > 1) {
-      //   this.isPlural = 's'
-      // } else {
-      //   this.isPlural = ''
-      // }
+      console.log(event.id, event.url) // event.id, url  düşüyor
       this.$buefy.dialog.confirm({
         title: `Deleting alert${this.isPlural}`,
         message: `Are you sure you want to <b>delete</b> your alert${this.isPlural}? This action cannot be undone.`,
@@ -311,14 +307,8 @@ export default {
       })
     },
     alertDelete(event) {
-      // console.log('deleted', event.id)
       const index = event.id
       console.log(this.dataList.splice(index, 1))
-      // console.log('deleted', event.id)
-
-      // for (let i = 0; i < this.checkedRows.length; i++) {
-      //   console.log(this.checkedRows[i].id)
-      // }
       this.$buefy.toast.open({
         message: 'You have successfully deleted!',
         type: 'is-success',
