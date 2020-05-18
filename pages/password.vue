@@ -162,7 +162,7 @@
       <div class="column is-3" />
       <div class="column is-6">
         <b-table
-          :data="dataList"
+          :data="filteredUsername"
           :columns="columns"
         >
           <template slot-scope="props">
@@ -219,12 +219,12 @@ export default {
     'auth'
   ],
 
-  // computed: {
-  //   filteredUsername() {
-  //     const filter = new RegExp(this.findUsername, 'i')
-  //     return this.dataList.filter(el => el.username.toString().match(filter))
-  //   }
-  // },
+  computed: {
+    filteredUsername() {
+      const filter = new RegExp(this.findUsername, 'i')
+      return this.dataList.filter(el => el.username.toString().match(filter))
+    }
+  },
   // asyncData({ store, redirect }) {
   //   if (store.state.auth.loggedIn === true) {
   //     return redirect('/password')
@@ -236,17 +236,36 @@ export default {
 
   methods: {
     valuesAlertEdit(event) {
-      // console.log(event.id)
       this.alertEditForm.id = event.id
       this.alertEditForm.url = event.url
       this.alertEditForm.username = event.username
       this.alertEditForm.password = event.password
       this.ismodalAlertEdit = true
     },
-    alertEdit() {
-      console.log(this.alertEditForm.id, this.alertEditForm.url, this.alertEditForm.username)
-
-      this.ismodalAlertEdit = false
+    async alertEdit() {
+      try {
+        await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
+        await this.$axios.put(`/api/logins/${this.alertEditForm.id}`, this.alertEditForm)
+        this.alertEditForm.id = ''
+        this.alertEditForm.url = ''
+        this.alertEditForm.username = ''
+        this.alertEditForm.password = ''
+        this.ismodalAlertEdit = false
+        this.$buefy.toast.open({
+          message: 'You have successfully edited alert!',
+          type: 'is-success',
+          position: 'is-bottom-right',
+          duration: 4000
+        })
+        this.passwordGet()
+      } catch (e) {
+        this.$buefy.toast.open({
+          message: e.message,
+          type: 'is-danger',
+          position: 'is-bottom-right',
+          duration: 4000
+        })
+      }
     },
     confirmAlertDelete(event) {
       this.$buefy.dialog.confirm({
