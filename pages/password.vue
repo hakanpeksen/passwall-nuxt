@@ -37,7 +37,7 @@
       </div>
       <div class="column" />
       <!-- Create Alert Modal Form  -->
-      <b-modal :active.sync="ismodalAlertCreate" :width="640">
+      <b-modal :active.sync="ismodalPasswordCreate" :width="640">
         <form @submit.prevent="alertCreate" method="post">
           <div class="box">
             <div class="ant-modal-header">
@@ -93,20 +93,20 @@
         </form>
       </b-modal>
       <!-- Edit Alert Modal Form  -->
-      <b-modal :active.sync="ismodalAlertEdit" :width="640">
-        <form @submit.prevent="alertEdit" method="post">
+      <b-modal :active.sync="ismodalPasswordEdit" :width="640">
+        <form @submit.prevent="passwordEdit" method="post">
           <div class="box">
             <div class="ant-modal-header">
               <div class="ant-modal-title">
                 Edit
               </div>
             </div>
-            <input v-model="alertEditForm.id" type="hidden">
+            <input v-model="passwordEditForm.id" type="hidden">
             <div class="field">
               <b-field label="URL" label-for="uf_baseurl">
                 <b-input
                   id="uf_baseurl"
-                  v-model="alertEditForm.url"
+                  v-model="passwordEditForm.url"
                   type="text"
                   size="is-medium"
                   placeholder="https://example.com"
@@ -117,7 +117,7 @@
               <b-field label="Username" label-for="uf_username">
                 <b-input
                   id="uf_username"
-                  v-model="alertEditForm.username"
+                  v-model="passwordEditForm.username"
                   type="text"
                   size="is-medium"
                   placeholder="Username or Email"
@@ -128,7 +128,7 @@
               <b-field label="Password" label-for="uf_password">
                 <b-input
                   id="uf_password"
-                  v-model="alertEditForm.password"
+                  v-model="passwordEditForm.password"
                   type="password"
                   size="is-medium"
                   placeholder="Password"
@@ -163,7 +163,6 @@
       <div class="column is-6">
         <b-table
           :data="filteredUsername"
-          :columns="columns"
         >
           <template slot-scope="props">
             <b-table-column field="url" label="Url">
@@ -177,10 +176,10 @@
             </b-table-column>
 
             <b-table-column>
-              <button @click="valuesAlertEdit(props.row,$event)" class="button is-small is-light">
+              <button @click="valuesPasswordEdit(props.row,$event)" class="button is-small is-light">
                 <b-icon icon="edit" size="is-small" />
               </button>
-              <button @click="confirmAlertDelete(props.row,$event)" class="button is-small is-light">
+              <button @click="confirmPasswordDelete(props.row,$event)" class="button is-small is-light">
                 <b-icon icon="trash" size="is-small" />
               </button>
             </b-table-column>
@@ -201,7 +200,7 @@ export default {
         username: '',
         password: ''
       },
-      alertEditForm: {
+      passwordEditForm: {
         id: null,
         url: null,
         username: null,
@@ -209,8 +208,8 @@ export default {
 
       },
       findUsername: '',
-      ismodalAlertEdit: false,
-      ismodalAlertCreate: false,
+      ismodalPasswordEdit: false,
+      ismodalPasswordCreate: false,
       isPlural: ''
 
     }
@@ -235,22 +234,35 @@ export default {
   },
 
   methods: {
-    valuesAlertEdit(event) {
-      this.alertEditForm.id = event.id
-      this.alertEditForm.url = event.url
-      this.alertEditForm.username = event.username
-      this.alertEditForm.password = event.password
-      this.ismodalAlertEdit = true
-    },
-    async alertEdit() {
+    async passwordGet() {
       try {
         await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
-        await this.$axios.put(`/api/logins/${this.alertEditForm.id}`, this.alertEditForm)
-        this.alertEditForm.id = ''
-        this.alertEditForm.url = ''
-        this.alertEditForm.username = ''
-        this.alertEditForm.password = ''
-        this.ismodalAlertEdit = false
+        await this.$axios.get('/api/logins').then(res => (this.dataList = res.data))
+      } catch (e) {
+        this.$buefy.toast.open({
+          message: e.message,
+          type: 'is-danger',
+          position: 'is-bottom-right',
+          duration: 4000
+        })
+      }
+    },
+    valuesPasswordEdit(event) {
+      this.passwordEditForm.id = event.id
+      this.passwordEditForm.url = event.url
+      this.passwordEditForm.username = event.username
+      this.passwordEditForm.password = event.password
+      this.ismodalPasswordEdit = true
+    },
+    async passwordEdit() {
+      try {
+        await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
+        await this.$axios.put(`/api/logins/${this.passwordEditForm.id}`, this.passwordEditForm)
+        this.passwordEditForm.id = ''
+        this.passwordEditForm.url = ''
+        this.passwordEditForm.username = ''
+        this.passwordEditForm.password = ''
+        this.ismodalPasswordEdit = false
         this.$buefy.toast.open({
           message: 'You have successfully edited alert!',
           type: 'is-success',
@@ -267,17 +279,17 @@ export default {
         })
       }
     },
-    confirmAlertDelete(event) {
+    confirmPasswordDelete(event) {
       this.$buefy.dialog.confirm({
-        title: `Deleting alert${this.isPlural}`,
+        title: `Deleting password${this.isPlural}`,
         message: `Are you sure you want to <b>delete</b> your alert${this.isPlural}? This action cannot be undone.`,
-        confirmText: `Delete Alert${this.isPlural}`,
+        confirmText: `Delete Password${this.isPlural}`,
         type: 'is-danger',
         hasIcon: true,
-        onConfirm: () => this.alertDelete(event)
+        onConfirm: () => this.passwordDelete(event)
       })
     },
-    async alertDelete(event) {
+    async passwordDelete(event) {
       try {
         await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
         await this.$axios.delete(`/api/logins/${event.id}`)
@@ -288,19 +300,6 @@ export default {
           duration: 4000
         })
         this.passwordGet()
-      } catch (e) {
-        this.$buefy.toast.open({
-          message: e.message,
-          type: 'is-danger',
-          position: 'is-bottom-right',
-          duration: 4000
-        })
-      }
-    },
-    async passwordGet() {
-      try {
-        await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
-        await this.$axios.get('/api/logins').then(res => (this.dataList = res.data))
       } catch (e) {
         this.$buefy.toast.open({
           message: e.message,
