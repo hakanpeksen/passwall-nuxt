@@ -8,7 +8,7 @@
         </h2>
       </div>
       <div class="column">
-        <button @click="ismodalAlertCreate = true" class="button is-info is-pulled-right">
+        <button @click="ismodalPasswordCreate = true" class="button is-info is-pulled-right">
           <b-icon
             icon="plus"
             size="is-small"
