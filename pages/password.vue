@@ -163,6 +163,7 @@
       <div class="column is-6">
         <b-table
           :data="dataList"
+          :columns="columns"
         >
           <template slot-scope="props">
             <b-table-column field="url" label="Url">
@@ -179,7 +180,7 @@
               <button @click="valuesAlertEdit(props.row,$event)" class="button is-small is-light">
                 <b-icon icon="edit" size="is-small" />
               </button>
-              <button @click="confirmAlertDelete(props.row)" class="button is-small is-light">
+              <button @click="confirmAlertDelete(props.row,$event)" class="button is-small is-light">
                 <b-icon icon="trash" size="is-small" />
               </button>
             </b-table-column>
@@ -194,24 +195,7 @@
 export default {
   data() {
     return {
-      // isPaginated: true,
-      // isPaginationSimple: false,
-      // currentPage: 1,
-      // perPage: 2,
-      // paginationSize: 'is-small',
-      // checkboxPosition: 'right',
-      dataList: [
-        // { id: 3, created_at: '2020-05-04T15:57:09Z', updated_at: '2020-05-04T15:57:09Z', deleted_at: null, url: 'https://test2.com', username: 'test2', password: 'test2' }, { id: 2, created_at: '2020-05-04T15:56:19Z', updated_at: '2020-05-04T15:56:19Z', deleted_at: null, url: 'http://harunpeksen.com', username: 'harun', password: '12345' }, { id: 1, created_at: '2020-05-04T15:54:36Z', updated_at: '2020-05-04T15:54:36Z', deleted_at: null, url: 'https://test.com', username: 'testuser', password: 'mE9K5fga@XIkk9x!' }
-      ],
-      // columns: [{
-      //   field: 'url',
-      //   label: 'Url'
-      // },
-      // {
-      //   field: 'username',
-      //   label: 'Username'
-      // }],
-
+      dataList: [],
       userForm: {
         baseurl: process.env.baseURL || '',
         username: '',
@@ -224,7 +208,6 @@ export default {
         password: null
 
       },
-      checkedRows: [],
       findUsername: '',
       ismodalAlertEdit: false,
       ismodalAlertCreate: false,
@@ -232,6 +215,9 @@ export default {
 
     }
   },
+  middleware: [
+    'auth'
+  ],
 
   // computed: {
   //   filteredUsername() {
@@ -263,7 +249,6 @@ export default {
       this.ismodalAlertEdit = false
     },
     confirmAlertDelete(event) {
-      console.log(event.id, event.url) // event.id, url  düşüyor
       this.$buefy.dialog.confirm({
         title: `Deleting alert${this.isPlural}`,
         message: `Are you sure you want to <b>delete</b> your alert${this.isPlural}? This action cannot be undone.`,
@@ -273,24 +258,32 @@ export default {
         onConfirm: () => this.alertDelete(event)
       })
     },
-    alertDelete(event) {
-      console.log(event)
-      console.log(this.dataList.splice(event, 1))
-      console.log(this.dataList)
-      this.$buefy.toast.open({
-        message: 'You have successfully deleted!',
-        type: 'is-success',
-        position: 'is-bottom-right',
-        duration: 4000
-      })
-      this.checkedRows = []
+    async alertDelete(event) {
+      try {
+        await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
+        await this.$axios.delete(`/api/logins/${event.id}`)
+        this.$buefy.toast.open({
+          message: 'You have successfully deleted!',
+          type: 'is-success',
+          position: 'is-bottom-right',
+          duration: 4000
+        })
+        this.passwordGet()
+      } catch (e) {
+        this.$buefy.toast.open({
+          message: e.message,
+          type: 'is-danger',
+          position: 'is-bottom-right',
+          duration: 4000
+        })
+      }
     },
     async passwordGet() {
       try {
-        this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
-        this.dataList = await this.$axios.get('/api/logins')
+        await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
+        await this.$axios.get('/api/logins').then(res => (this.dataList = res.data))
       } catch (e) {
-        this.$toast.open({
+        this.$buefy.toast.open({
           message: e.message,
           type: 'is-danger',
           position: 'is-bottom-right',
