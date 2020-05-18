@@ -224,11 +224,6 @@ export default {
       return this.dataList.filter(el => el.username.toString().match(filter))
     }
   },
-  // asyncData({ store, redirect }) {
-  //   if (store.state.auth.loggedIn === true) {
-  //     return redirect('/password')
-  //   }
-  // },
   mounted() {
     this.passwordGet()
   },
