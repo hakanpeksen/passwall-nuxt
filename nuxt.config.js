@@ -27,7 +27,9 @@ export default {
   /*
      ** Plugins to load before mounting the App
      */
-  plugins: [],
+  plugins: [
+    '~/plugins/mixins/user.js'
+  ],
   /*
      ** Nuxt.js dev-modules
      */
@@ -37,6 +39,7 @@ export default {
      */
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
     'nuxt-buefy',
     'nuxt-fontawesome'
     // Doc: https://github.com/nuxt-community/modules/tree/master/packages/bulma
@@ -44,6 +47,32 @@ export default {
   axios: {
     // baseURL: 'https://monitera-trends.appspot.com'
     baseURL: 'https://passwall-server.hakanpeksen.com'
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: 'auth/signin', method: 'post', propertyName: 'access_token' },
+          user: { url: 'api/logins', method: 'get', propertyName: false },
+          logout: false
+        },
+        token: {
+          enabled: true,
+          type: 'Bearer',
+          localStorage: true,
+          name: 'access_token',
+          cookie: true,
+          cookieName: 'access_token'
+        }
+      }
+    },
+    redirect: {
+      login: '',
+      logout: '/',
+      callback: '',
+      home: ''
+    },
+    watchLoggedIn: false
   },
 
   buefy: {

@@ -162,31 +162,24 @@
       <div class="column is-3" />
       <div class="column is-6">
         <b-table
-          v-if="dataList && dataList.length > 0"
-          :data="filteredUsername"
-          :columns="columns"
-          :default-sort-direction="defaultSortDirection"
-          :sort-icon="sortIcon"
-          :sort-icon-size="sortIconSize"
-          default-sort="url"
+          :data="dataList"
         >
           <template slot-scope="props">
-            <b-table-column field="url" label="Url" sortable>
+            <b-table-column field="url" label="Url">
               {{ props.row.url }}
             </b-table-column>
-            <b-table-column field="username" label="Username" sortable>
+            <b-table-column field="username" label="Username">
               {{ props.row.username }}
             </b-table-column>
-            <b-table-column field="password" label="Password" sortable>
+            <b-table-column field="password" label="Password">
               {{ props.row.password }}
             </b-table-column>
-            <b-table-column field="" label="" sortable />
 
             <b-table-column>
               <button @click="valuesAlertEdit(props.row,$event)" class="button is-small is-light">
                 <b-icon icon="edit" size="is-small" />
               </button>
-              <button @click="confirmAlertDelete(props.row,$event)" class="button is-small is-light">
+              <button @click="confirmAlertDelete(props.row)" class="button is-small is-light">
                 <b-icon icon="trash" size="is-small" />
               </button>
             </b-table-column>
@@ -201,43 +194,14 @@
 export default {
   data() {
     return {
-      isPaginated: true,
-      isPaginationSimple: false,
-      currentPage: 1,
-      perPage: 2,
-      paginationSize: 'is-small',
-      checkboxPosition: 'right',
+      // isPaginated: true,
+      // isPaginationSimple: false,
+      // currentPage: 1,
+      // perPage: 2,
+      // paginationSize: 'is-small',
+      // checkboxPosition: 'right',
       dataList: [
-        {
-          id: 14,
-          url: 'paypal.com/tr/home',
-          username: 'Jammie',
-          password: 'YEF7eNCmdXu'
-        },
-        {
-          id: 13,
-          url: 'cloudflare.com',
-          username: 'Patsy',
-          password: 'LWPJv0KizB2th'
-        },
-        {
-          id: 12,
-          url: 'twitch.tv',
-          username: 'Cade',
-          password: 'JkC_!c5Mgk=b'
-        },
-        {
-          id: 11,
-          url: 'facebook.com',
-          username: 'Dickinson',
-          password: 'tytAioiLtfNN2'
-        },
-        {
-          id: 10,
-          url: 'mail.google.com',
-          username: 'Adella',
-          password: 'O]LTPvTq'
-        }
+        // { id: 3, created_at: '2020-05-04T15:57:09Z', updated_at: '2020-05-04T15:57:09Z', deleted_at: null, url: 'https://test2.com', username: 'test2', password: 'test2' }, { id: 2, created_at: '2020-05-04T15:56:19Z', updated_at: '2020-05-04T15:56:19Z', deleted_at: null, url: 'http://harunpeksen.com', username: 'harun', password: '12345' }, { id: 1, created_at: '2020-05-04T15:54:36Z', updated_at: '2020-05-04T15:54:36Z', deleted_at: null, url: 'https://test.com', username: 'testuser', password: 'mE9K5fga@XIkk9x!' }
       ],
       // columns: [{
       //   field: 'url',
@@ -246,11 +210,8 @@ export default {
       // {
       //   field: 'username',
       //   label: 'Username'
-      // },
-      // {
-      //   field: 'password',
-      //   label: 'Password'
       // }],
+
       userForm: {
         baseurl: process.env.baseURL || '',
         username: '',
@@ -271,14 +232,20 @@ export default {
 
     }
   },
-  computed: {
-    filteredUsername() {
-      const filter = new RegExp(this.findUsername, 'i')
-      return this.dataList.filter(el => el.username.toString().match(filter))
-    }
-  },
+
+  // computed: {
+  //   filteredUsername() {
+  //     const filter = new RegExp(this.findUsername, 'i')
+  //     return this.dataList.filter(el => el.username.toString().match(filter))
+  //   }
+  // },
+  // asyncData({ store, redirect }) {
+  //   if (store.state.auth.loggedIn === true) {
+  //     return redirect('/password')
+  //   }
+  // },
   mounted() {
-    // this.passwordGet()
+    this.passwordGet()
   },
 
   methods: {
@@ -307,8 +274,9 @@ export default {
       })
     },
     alertDelete(event) {
-      const index = event.id
-      console.log(this.dataList.splice(index, 1))
+      console.log(event)
+      console.log(this.dataList.splice(event, 1))
+      console.log(this.dataList)
       this.$buefy.toast.open({
         message: 'You have successfully deleted!',
         type: 'is-success',
@@ -316,27 +284,20 @@ export default {
         duration: 4000
       })
       this.checkedRows = []
+    },
+    async passwordGet() {
+      try {
+        this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
+        this.dataList = await this.$axios.get('/api/logins')
+      } catch (e) {
+        this.$toast.open({
+          message: e.message,
+          type: 'is-danger',
+          position: 'is-bottom-right',
+          duration: 4000
+        })
+      }
     }
-
-    // async passwordGet() {
-    //   try {
-    //   //  await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'))
-    //   //  localStorage.getItem('TOKEN', res.data.access_token)
-    //     this.dataList = await this.$axios.post('https://passwall-server.hakanpeksen.com/api/logins')
-    //     // if (!this.dataList || this.dataList.length < 3) {
-    //     //   this.isLimit = true
-    //     // } else {
-    //     //   this.isLimit = false
-    //     // }
-    //   } catch (e) {
-    //     this.$toast.open({
-    //       message: e.message,
-    //       type: 'is-danger',
-    //       position: 'is-bottom-right',
-    //       duration: 4000
-    //     })
-    //   }
-    // }
 
   }
 

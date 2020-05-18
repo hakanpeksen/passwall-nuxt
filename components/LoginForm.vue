@@ -95,13 +95,14 @@ export default {
         this.errorValidMessage = ''
       }
       try {
-        await this.$axios.post('https://passwall-server.hakanpeksen.com/auth/signin', this.userForm)
-          .then((res) => {
-            /* eslint camelcase: ["error", { "ignoreDestructuring": true } ] */
-            localStorage.setItem('TOKEN', res.data.access_token)
-            localStorage.setItem('REFRESH_TOKEN', res.data.refresh_token)
-          })
-        this.$router.push({ path: '/password' })
+        await this.$auth.login({ data: this.userForm })
+
+        // .then((res) => {
+        //   /* eslint camelcase: ["error", { "ignoreDestructuring": true } ] */
+        //   // localStorage.setItem('TOKEN', res.data.access_token)
+        //   // localStorage.setItem('REFRESH_TOKEN', res.data.refresh_token)
+        // })
+        // this.$router.push({ path: '/password' })
         this.isError = false
         this.$buefy.toast.open({
           message: 'You have successfully logged in!',
