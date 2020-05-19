@@ -38,7 +38,7 @@
       <div class="column" />
       <!-- Create Alert Modal Form  -->
       <b-modal :active.sync="ismodalPasswordCreate" :width="640">
-        <form @submit.prevent="alertCreate" method="post">
+        <form @submit.prevent="passwordCreate" method="post">
           <div class="box">
             <div class="ant-modal-header">
               <div class="ant-modal-title">
@@ -49,7 +49,7 @@
               <b-field label="URL" label-for="uf_baseurl">
                 <b-input
                   id="uf_baseurl"
-                  v-model="userForm.baseurl"
+                  v-model="passwordForm.url"
                   type="text"
                   size="is-medium"
                   placeholder="https://example.com"
@@ -61,7 +61,7 @@
               <b-field label="Username" label-for="uf_username">
                 <b-input
                   id="uf_username"
-                  v-model="userForm.username"
+                  v-model="passwordForm.username"
                   type="text"
                   size="is-medium"
                   placeholder="Username or Email"
@@ -72,7 +72,7 @@
               <b-field label="Password" label-for="uf_password">
                 <b-input
                   id="uf_password"
-                  v-model="userForm.password"
+                  v-model="passwordForm.password"
                   type="password"
                   size="is-medium"
                   placeholder="Password"
@@ -81,7 +81,7 @@
                 />
               </b-field>
               <div class="control">
-                <button @click="ismodalAlertCreate = false" class="button is-rounded" type="button">
+                <button @click="ismodalPasswordCreate = false" class="button is-rounded" type="button">
                   Cancel
                 </button>
                 <button type="submit" name="button" class="button is-info is-rounded">
@@ -195,8 +195,8 @@ export default {
   data() {
     return {
       dataList: [],
-      userForm: {
-        baseurl: process.env.baseURL || '',
+      passwordForm: {
+        url: '',
         username: '',
         password: ''
       },
@@ -233,6 +233,30 @@ export default {
       try {
         await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
         await this.$axios.get('/api/logins').then(res => (this.dataList = res.data))
+      } catch (e) {
+        this.$buefy.toast.open({
+          message: e.message,
+          type: 'is-danger',
+          position: 'is-bottom-right',
+          duration: 4000
+        })
+      }
+    },
+    async passwordCreate() {
+      try {
+        await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
+        await this.$axios.post('/api/logins', this.passwordForm)
+        this.passwordForm.url = ''
+        this.passwordForm.username = ''
+        this.passwordForm.password = ''
+        this.ismodalPasswordCreate = false
+        this.$buefy.toast.open({
+          message: 'You have successfully created alert!',
+          type: 'is-success',
+          position: 'is-bottom-right',
+          duration: 4000
+        })
+        this.passwordGet()
       } catch (e) {
         this.$buefy.toast.open({
           message: e.message,
