@@ -16,35 +16,9 @@ export default {
     }
   },
   created() {
-    this.signinUser()
   },
   methods: {
-    success() {
-      this.$buefy.toast.open({
-        message: 'Something happened correctly!',
-        type: 'is-success'
-      })
-    },
 
-    async signinUser() {
-      try {
-        //  await this.$axios.get({ data: this.userForm })
-        await this.$axios
-          .$get('')
-          .then((res) => {
-            // console.log(res)
-          })
-        //   this.$toast.open({
-        //   message: 'You have successfully logged in!',
-        //   type: 'is-success',
-        //   position: 'is-bottom',
-        //   duration: 7000
-        // })
-      } catch (e) {
-        //   this.errorMessage = `Your email address or password don't match!`
-        //  this.isError = true
-      }
-    }
   }
 }
 </script>

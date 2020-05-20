@@ -17,22 +17,16 @@
         </button>
       </div>
       <div>
-        <b-dropdown class="is-bottom-left" aria-role="list">
+        <b-dropdown class="is-bottom-left" aria-role="menuitem">
           <button slot="trigger" class="button">
             <b-icon
               icon="ellipsis-h"
               size="is-small"
             />
           </button>
-          <b-dropdown-item aria-role="listitem">
-            Action
-          </b-dropdown-item>
-          <b-dropdown-item aria-role="listitem">
-            Another action
-          </b-dropdown-item>
-          <b-dropdown-item aria-role="listitem">
-            Something else
-          </b-dropdown-item>
+          <a @click.prevent="logout" href="#" class="navbar-item">
+            Logout
+          </a>
         </b-dropdown>
       </div>
       <div class="column" />
@@ -215,7 +209,7 @@ export default {
     }
   },
   middleware: [
-    'auth'
+    'statuscheck'
   ],
 
   computed: {
@@ -231,7 +225,10 @@ export default {
   methods: {
     async passwordGet() {
       try {
-        await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
+      //  await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
+        console.log(this.$auth.loggedIn)
+        console.log(this.$store.state.auth.user)
+        console.log(this.$store.state.auth.loggedIn)
         await this.$axios.get('/api/logins').then(res => (this.dataList = res.data))
       } catch (e) {
         this.$buefy.toast.open({
@@ -327,8 +324,13 @@ export default {
           duration: 4000
         })
       }
+    },
+    logout() {
+      this.$auth.logout()
+      if (this.$route.path === '/password') {
+        this.$router.push({ path: '/' })
+      }
     }
-
   }
 
 }

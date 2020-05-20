@@ -75,9 +75,6 @@ export default {
       errorValidUrl: false
     }
   },
-
-  created() {
-  },
   methods: {
     async signinUser() {
       const url = this.userForm.baseurl

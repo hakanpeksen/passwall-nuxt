@@ -53,8 +53,10 @@ export default {
       local: {
         endpoints: {
           login: { url: 'auth/signin', method: 'post', propertyName: 'access_token' },
+          refresh: { url: 'auth/refresh', method: 'post', propertyName: '' },
           user: { url: 'api/logins', method: 'get', propertyName: false },
           logout: false
+
         },
         token: {
           enabled: true,
