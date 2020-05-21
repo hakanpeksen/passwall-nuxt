@@ -220,12 +220,33 @@ export default {
   },
   mounted() {
     this.passwordGet()
+    this.refreshToken()
   },
 
   methods: {
+    async  refreshToken() {
+      try {
+        /* eslint-disable camelcase */
+        const response = await this.$axios.post('/auth/refresh',
+          JSON.stringify({
+            refresh_token: localStorage.getItem('REFRESH_TOKEN')
+          }))
+
+        const { access_token: TOKEN, refresh_token: REFRESH_TOKEN } = response
+        if (TOKEN && REFRESH_TOKEN) {
+          localStorage.setItem('TOKEN', TOKEN)
+          localStorage.setItem('REFRESH_TOKEN', REFRESH_TOKEN)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
     async passwordGet() {
       try {
-      //  await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
+        await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
+        console.log(localStorage.getItem('auth._token.local'))
+        console.log(localStorage.getItem('REFRESH_TOKEN'))
         console.log(this.$auth.loggedIn)
         console.log(this.$store.state.auth.user)
         console.log(this.$store.state.auth.loggedIn)

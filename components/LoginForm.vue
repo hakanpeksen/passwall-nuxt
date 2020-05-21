@@ -88,6 +88,11 @@ export default {
       }
       try {
         await this.$auth.login({ data: this.userForm })
+          .then((res) => {
+            localStorage.setItem('TOKEN', res.data.access_token)
+            localStorage.setItem('REFRESH_TOKEN', res.data.refresh_token)
+          })
+
         this.$router.push({ path: '/password' })
         this.isError = false
         this.$buefy.toast.open({
