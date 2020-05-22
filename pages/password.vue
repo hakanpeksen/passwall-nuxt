@@ -220,8 +220,8 @@ export default {
   },
   mounted() {
     setInterval(() => {
-      this.refreshToken()
-    }, 300000)
+      // this.refreshToken()
+    }, 60000)
     this.passwordGet()
     console.log(this.$auth.$storage.getCookie('_token.local'))
     console.log(this.$auth.$storage.getCookie('_refresh_token.local'))
