@@ -219,12 +219,30 @@ export default {
     }
   },
   mounted() {
+    setInterval(() => {
+      this.refreshToken()
+    }, 300000)
     this.passwordGet()
-
-    // this.refreshToken()
+    console.log(this.$auth.$storage.getCookie('_token.local'))
+    console.log(this.$auth.$storage.getCookie('_refresh_token.local'))
   },
 
   methods: {
+    async  refreshToken() {
+      try {
+        /* eslint-disable camelcase */
+        const res = await this.$axios.post('/auth/refresh',
+          JSON.stringify({
+            refresh_token: this.$auth.$storage.getCookie('_refresh_token.local')
+          }))
+        console.log(res.data.refresh_token)
+        this.$auth.setRefreshToken('local', res.data.refresh_token)
+        this.$auth.setToken('local', res.data.access_token)
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
     async passwordGet() {
       try {
         await this.$axios.setToken(this.$auth.$storage.getCookie('_token.local'), '')
