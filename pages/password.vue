@@ -166,7 +166,10 @@
               {{ props.row.username }}
             </b-table-column>
             <b-table-column field="password" label="Password">
-              {{ props.row.password }}
+              {{ show ? props.row.password : '• • • • • • • •' }}
+              <button @click="showToggle" type="button" class="button is-small is-light">
+                <b-icon icon="eye" size="is-small" />
+              </button>
             </b-table-column>
 
             <b-table-column>
@@ -188,6 +191,7 @@
 export default {
   data() {
     return {
+      show: false,
       dataList: [],
       passwordForm: {
         url: '',
@@ -209,6 +213,7 @@ export default {
     }
   },
   middleware: [
+    'auth',
     'statuscheck'
   ],
 
@@ -228,6 +233,12 @@ export default {
   },
 
   methods: {
+    showToggle() {
+      /* eslint-disable no-unused-expressions */
+      /* eslint-disable no-self-compare */
+      this.show = !this.show
+      console.log('toggle')
+    },
     async  refreshToken() {
       try {
         /* eslint-disable camelcase */
@@ -265,7 +276,7 @@ export default {
         this.passwordForm.password = ''
         this.ismodalPasswordCreate = false
         this.$buefy.toast.open({
-          message: 'You have successfully created alert!',
+          message: 'You have successfully created password!',
           type: 'is-success',
           position: 'is-bottom-right',
           duration: 4000
@@ -297,7 +308,7 @@ export default {
         this.passwordEditForm.password = ''
         this.ismodalPasswordEdit = false
         this.$buefy.toast.open({
-          message: 'You have successfully edited alert!',
+          message: 'You have successfully edited password!',
           type: 'is-success',
           position: 'is-bottom-right',
           duration: 4000
@@ -315,7 +326,7 @@ export default {
     confirmPasswordDelete(event) {
       this.$buefy.dialog.confirm({
         title: `Deleting password${this.isPlural}`,
-        message: `Are you sure you want to <b>delete</b> your alert${this.isPlural}? This action cannot be undone.`,
+        message: 'Are you sure you want to delete This action cannot be undone.',
         confirmText: `Delete Password${this.isPlural}`,
         type: 'is-danger',
         hasIcon: true,

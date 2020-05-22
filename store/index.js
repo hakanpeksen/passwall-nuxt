@@ -7,6 +7,5 @@ export const getters = {
   }
 }
 export const state = () => ({
-  countries: null,
-  userAgent: null
+
 })

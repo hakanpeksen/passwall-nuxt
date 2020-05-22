@@ -159,6 +159,10 @@ div.control input::placeholder {
     margin-top: 13px;
 }
 
+.button.is-light {
+    background-color: transparent;
+}
+
 @media screen and (min-width: 769px),
 print {
     .column.is-7,
