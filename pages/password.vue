@@ -167,7 +167,7 @@
             </b-table-column>
             <b-table-column field="password" label="Password">
               {{ show ? props.row.password : '• • • • • • • •' }}
-              <button @click="showToggle" type="button" class="button is-small is-light">
+              <button @click="showToggle(props.row, index)" type="button" class="button is-small is-light">
                 <b-icon icon="eye" size="is-small" />
               </button>
             </b-table-column>
@@ -233,11 +233,12 @@ export default {
   },
 
   methods: {
-    showToggle() {
+    showToggle(event) {
       /* eslint-disable no-unused-expressions */
       /* eslint-disable no-self-compare */
       this.show = !this.show
-      console.log('toggle')
+
+      console.log('toggle', event.password)
     },
     async  refreshToken() {
       try {
