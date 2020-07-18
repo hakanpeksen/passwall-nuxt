@@ -166,12 +166,11 @@
               {{ props.row.username }}
             </b-table-column>
             <b-table-column field="password" label="Password">
-              {{ show ? props.row.password : '• • • • • • • •' }}
-              <button @click="showToggle(props.row, index)" type="button" class="button is-small is-light">
+              {{ show ? props.row.password: '• • • • • • • •' }}
+              <button @click="showToggle(props.row, $event)" type="button" class="button is-small is-light">
                 <b-icon icon="eye" size="is-small" />
               </button>
             </b-table-column>
-
             <b-table-column>
               <button @click="valuesPasswordEdit(props.row,$event)" class="button is-small is-light">
                 <b-icon icon="edit" size="is-small" />
@@ -191,6 +190,7 @@
 export default {
   data() {
     return {
+      showDetailIcon: true,
       show: false,
       dataList: [],
       passwordForm: {
